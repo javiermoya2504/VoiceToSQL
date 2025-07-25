@@ -32,7 +32,7 @@ git clone https://github.com/tu-usuario/voice-to-sql.git
 cd voice-to-sql
 ```
 
-### 2. Instala las dependencias:
+### 2. Instala las dependencias (macOS):
 ```bash
 brew install portaudio
 pip install pyaudio
@@ -40,6 +40,16 @@ pip install -r requirements.txt
 brew install ffmpeg
 /Applications/Python\ 3.12/Install\ Certificates.command
 ```
+
+### Instala dependecnias (Linux base ubuntu, debian):
+```bash
+sudo apt update
+sudo apt install python3-pyaudio portaudio19-dev ffmpeg
+
+pip install -r requirements.txt
+
+```
+
 ###	3.	Agrega tu API key de OpenAI en un archivo llamado openai_api_key.txt:
 
 sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
