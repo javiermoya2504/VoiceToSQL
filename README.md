@@ -23,7 +23,7 @@ Este proyecto permite ejecutar consultas SQL en una base de datos SQLite usando 
 
 ---
 
-## 🧰 Instalación (macOS)
+## 🧰 Instalación
 
 ### 1. Clona el repositorio:
 
