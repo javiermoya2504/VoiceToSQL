@@ -51,9 +51,9 @@ pip install -r requirements.txt
 ```
 
 ###	3.	Agrega tu API key de OpenAI en un archivo llamado openai_api_key.txt:
-
+```bash
 sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-
+```
 Ejecuta el script con:
 
 ```bash
