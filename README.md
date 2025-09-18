@@ -23,7 +23,7 @@ Este proyecto permite ejecutar consultas SQL en una base de datos SQLite usando 
 
 ---
 
-## 🧰 Instalación
+## 🧰 Instalación MacOS
 
 ### 1. Clona el repositorio:
 
@@ -38,16 +38,33 @@ brew install portaudio
 pip install pyaudio
 pip install -r requirements.txt
 brew install ffmpeg
-/Applications/Python\ 3.12/Install\ Certificates.command
 ```
 
-### Instala dependecnias (Linux base ubuntu, debian):
+###	3.	Agrega tu API key de OpenAI en un archivo llamado openai_api_key.txt:
 ```bash
-sudo apt update
-sudo apt install python3-pyaudio portaudio19-dev ffmpeg
+sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+Ejecuta el script con:
 
-pip install -r requirements.txt
+```bash
+python main.py
+```
 
+## 🧰 Instalación Windows
+
+### 1. Clona el repositorio:
+
+```bash
+git clone https://github.com/tu-usuario/voice-to-sql.git
+cd voice-to-sql
+```
+
+### 2. Instala las dependencias:
+```bash
+python -m venv .venv
+.\.venv\Scripts\activate
+python -m pip install pyaudio
+python -m pip install ffmpeg
 ```
 
 ###	3.	Agrega tu API key de OpenAI en un archivo llamado openai_api_key.txt:
@@ -69,11 +86,16 @@ git clone https://github.com/tu-usuario/voice-to-sql.git
 cd voice-to-sql
 ```
 
-### 2. Contruye la imagen:
+###	2.	Agrega tu API key de OpenAI en un archivo llamado openai_api_key.txt:
+```bash
+sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+### 3. Contruye la imagen:
 ```bash
 docker build -t voicetosql .
 ```
 
-### 2. Ejecuta el contenedor:
+### 4. Ejecuta el contenedor:
 ```bash
 docker run --rm -it --device /dev/snd voicetosql```
