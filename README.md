@@ -98,4 +98,6 @@ docker build -t voicetosql .
 
 ### 4. Ejecuta el contenedor:
 ```bash
-docker run --rm -it --device /dev/snd voicetosql```
+docker run --rm -it --device /dev/snd voicetosql
+
+```
