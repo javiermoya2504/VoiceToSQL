@@ -59,3 +59,21 @@ Ejecuta el script con:
 ```bash
 python main.py
 ```
+
+## 🧰 Instalación en Linux con Docker
+
+### 1. Clona el repositorio:
+
+```bash
+git clone https://github.com/tu-usuario/voice-to-sql.git
+cd voice-to-sql
+```
+
+### 2. Contruye la imagen:
+```bash
+docker build -t voicetosql .
+```
+
+### 2. Ejecuta el contenedor:
+```bash
+docker run --rm -it --device /dev/snd voicetosql```
