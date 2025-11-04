@@ -7,12 +7,17 @@ import torch
 import openai
 import argparse
 import sqlite3
+from dotenv import load_dotenv
+
+# Cargar variables de entorno desde .env
+load_dotenv()
 
 db_path = "identifier.sqlite"
 
-# Leer la clave de API de OpenAI
-with open('openai_api_key.txt') as f:
-    api_key = f.readline().strip()
+# Leer la clave de API de OpenAI desde variable de entorno
+api_key = os.getenv('OPENAI_API_KEY')
+if not api_key:
+    raise ValueError("OPENAI_API_KEY no encontrada. Asegúrate de tener un archivo .env con OPENAI_API_KEY=tu_clave")
 openai.api_key = api_key
 
 def get_db_schema(db_path):

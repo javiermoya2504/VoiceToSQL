@@ -40,11 +40,14 @@ pip install -r requirements.txt
 brew install ffmpeg
 ```
 
-###	3.	Agrega tu API key de OpenAI en un archivo llamado openai_api_key.txt:
+### 3. Configura tu API key de OpenAI:
+
+Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 ```bash
-sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-Ejecuta el script con:
+
+### 4. Ejecuta el script con:
 
 ```bash
 python main.py
@@ -63,15 +66,17 @@ cd voice-to-sql
 ```bash
 python -m venv .venv
 .\.venv\Scripts\activate
-python -m pip install pyaudio
-python -m pip install ffmpeg
+pip install -r requirements.txt
 ```
 
-###	3.	Agrega tu API key de OpenAI en un archivo llamado openai_api_key.txt:
+### 3. Configura tu API key de OpenAI:
+
+Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 ```bash
-sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
-Ejecuta el script con:
+
+### 4. Ejecuta el script con:
 
 ```bash
 python main.py
@@ -86,12 +91,14 @@ git clone https://github.com/tu-usuario/voice-to-sql.git
 cd voice-to-sql
 ```
 
-###	2.	Agrega tu API key de OpenAI en un archivo llamado openai_api_key.txt:
+### 2. Configura tu API key de OpenAI:
+
+Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
 ```bash
-sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
-### 3. Contruye la imagen:
+### 3. Construye la imagen:
 ```bash
 docker build -t voicetosql .
 ```

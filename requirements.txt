@@ -1,7 +1,13 @@
 # --- Núcleo OpenAI / Whisper ---
 openai==1.97.1
+python-dotenv==1.0.1
 # Usa SOLO una fuente de Whisper; dejo la versión pinneada por commit (reproducible)
 openai-whisper @ git+https://github.com/openai/whisper.git@c0d2f624c09dc18e709e37c2ad90c039a4eb72a2
+
+# --- Streamlit UI ---
+streamlit==1.41.1
+pandas==2.2.3
+reportlab==4.2.5
 
 # --- Audio / STT ---
 PyAudio==0.2.14
