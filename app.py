@@ -19,31 +19,222 @@ from reportlab.lib.units import inch
 # Cargar variables de entorno
 load_dotenv()
 
-# Configuración de la página
+# Configuracion de la pagina
 st.set_page_config(
     page_title="Voice to SQL",
-    page_icon="🎤",
+    page_icon="V",
     layout="wide"
 )
+
+# --- CSS personalizado ---
+st.markdown("""
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    /* Tipografia general */
+    html, body, [class*="st-"] {
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+    }
+
+    /* Header */
+    .app-header {
+        background: #2c3e50;
+        padding: 2rem 2.5rem;
+        border-radius: 10px;
+        margin-bottom: 2rem;
+    }
+    .app-header h1 {
+        font-size: 2rem;
+        font-weight: 700;
+        color: #ffffff;
+        margin: 0;
+        letter-spacing: -0.5px;
+    }
+    .app-header p {
+        color: #bdc3c7;
+        font-size: 1rem;
+        margin: 0.35rem 0 0 0;
+        font-weight: 400;
+    }
+
+    /* Label de seccion */
+    .section-label {
+        font-size: 0.75rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.2px;
+        color: #7f8c8d;
+        margin-bottom: 0.75rem;
+    }
+
+    /* Seccion de resultados */
+    .results-container {
+        background: #f7f9fa;
+        border: 1px solid #dce1e5;
+        border-left: 3px solid #2c3e50;
+        border-radius: 6px;
+        padding: 1.5rem;
+        margin-top: 1rem;
+    }
+
+    /* SQL destacado */
+    .sql-display {
+        background: #2c3e50;
+        color: #ecf0f1;
+        border-radius: 6px;
+        padding: 1.2rem 1.5rem;
+        font-family: 'Fira Code', 'Courier New', monospace;
+        font-size: 0.9rem;
+        margin: 0.75rem 0;
+        overflow-x: auto;
+        border-left: 3px solid #3498db;
+    }
+
+    /* Botones primarios */
+    .stButton > button[kind="primary"] {
+        background-color: #2c3e50;
+        border: none;
+        border-radius: 6px;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        padding: 0.6rem 1.5rem;
+        transition: background-color 0.2s ease;
+    }
+    .stButton > button[kind="primary"]:hover {
+        background-color: #34495e;
+    }
+
+    /* Botones secundarios */
+    .stButton > button[kind="secondary"] {
+        border: 2px solid #2c3e50;
+        color: #2c3e50;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        background: transparent;
+    }
+    .stButton > button[kind="secondary"]:hover {
+        background-color: #2c3e50;
+        color: white;
+    }
+
+    /* Text area */
+    .stTextArea textarea {
+        border-radius: 6px;
+        border: 1.5px solid #dce1e5;
+        font-size: 0.95rem;
+        padding: 0.85rem;
+        transition: border-color 0.2s ease;
+    }
+    .stTextArea textarea:focus {
+        border-color: #3498db;
+        box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.12);
+    }
+
+    /* Sidebar */
+    section[data-testid="stSidebar"] {
+        background-color: #f7f9fa;
+    }
+    section[data-testid="stSidebar"] .stMarkdown h2 {
+        font-size: 1.1rem;
+        color: #2c3e50;
+        font-weight: 700;
+    }
+
+    /* Sidebar pasos */
+    .sidebar-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.6rem;
+        margin-bottom: 0.75rem;
+    }
+    .step-number {
+        background: #2c3e50;
+        color: white;
+        font-weight: 700;
+        font-size: 0.75rem;
+        width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 2px;
+    }
+    .step-text {
+        color: #555;
+        font-size: 0.88rem;
+        line-height: 1.5;
+    }
+
+    /* Divider */
+    .section-divider {
+        border: none;
+        height: 1px;
+        background: #dce1e5;
+        margin: 1.75rem 0;
+    }
+
+    /* Ajuste dataframe */
+    .stDataFrame {
+        border-radius: 6px;
+        overflow: hidden;
+        border: 1px solid #dce1e5;
+    }
+
+    /* Download button */
+    .stDownloadButton > button {
+        background-color: #27ae60;
+        border: none;
+        color: white;
+        border-radius: 6px;
+        font-weight: 600;
+        transition: background-color 0.2s ease;
+    }
+    .stDownloadButton > button:hover {
+        background-color: #219a52;
+    }
+
+    /* Status badges */
+    .status-badge {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 4px;
+        font-size: 0.8rem;
+        font-weight: 600;
+    }
+    .badge-success {
+        background: #eafaf1;
+        color: #27ae60;
+        border: 1px solid #c8e6d5;
+    }
+
+    /* Spinner color */
+    .stSpinner > div > div {
+        border-top-color: #3498db !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 # Configurar OpenAI
 api_key = os.getenv('OPENAI_API_KEY')
 if not api_key:
-    st.error("OPENAI_API_KEY no encontrada. Asegúrate de tener un archivo .env con OPENAI_API_KEY=tu_clave")
+    st.error("OPENAI_API_KEY no encontrada. Asegurate de tener un archivo .env con OPENAI_API_KEY=tu_clave")
     st.stop()
 openai.api_key = api_key
 
 # Path a la base de datos
 db_path = "identifier.sqlite"
 
-# Función para cargar el modelo Whisper bajo demanda
+# Funcion para cargar el modelo Whisper bajo demanda
 def get_audio_model():
     if 'audio_model' not in st.session_state:
         with st.spinner('Cargando modelo Whisper (solo la primera vez)...'):
             st.session_state.audio_model = whisper.load_model("tiny")
     return st.session_state.audio_model
 
-# Función para obtener el esquema de la BD
+# Funcion para obtener el esquema de la BD
 def get_db_schema(db_path):
     conn = sqlite3.connect(db_path)
     cursor = conn.cursor()
@@ -59,15 +250,14 @@ def get_db_schema(db_path):
     conn.close()
     return schema
 
-# Función para grabar voz
+# Funcion para grabar voz
 def grabar_voz():
-    # Cargar modelo solo cuando se necesita
     audio_model = get_audio_model()
 
     r = sr.Recognizer()
     try:
         with sr.Microphone(sample_rate=16000) as source:
-            st.info("🎤 Escuchando... Habla ahora")
+            st.info("Escuchando... Habla ahora")
             r.adjust_for_ambient_noise(source, duration=1)
             audio = r.listen(source, timeout=5, phrase_time_limit=10)
 
@@ -83,11 +273,11 @@ def grabar_voz():
         st.error(f"Error al grabar: {str(e)}")
         return None
 
-# Función para generar SQL
+# Funcion para generar SQL
 def generar_sql(texto_usuario):
     esquema_bd = get_db_schema(db_path)
     messages = [
-        {"role": "system", "content": f"Eres un científico de datos que ayuda a escribir consultas SQL. Solo responde con la consulta SQL, sin explicaciones, sin comentarios, y sin formateo markdown como triple backticks. La base de datos tiene la siguiente estructura: \n{esquema_bd}"},
+        {"role": "system", "content": f"Eres un cientifico de datos que ayuda a escribir consultas SQL. Solo responde con la consulta SQL, sin explicaciones, sin comentarios, y sin formateo markdown como triple backticks. La base de datos tiene la siguiente estructura: \n{esquema_bd}"},
         {"role": "user", "content": texto_usuario}
     ]
 
@@ -99,7 +289,7 @@ def generar_sql(texto_usuario):
     sql_query = sql_query.replace("```sql", "").replace("```", "").strip()
     return sql_query
 
-# Función para ejecutar SQL
+# Funcion para ejecutar SQL
 def ejecutar_sql(sql_query):
     conn = sqlite3.connect(db_path)
     try:
@@ -110,21 +300,20 @@ def ejecutar_sql(sql_query):
     finally:
         conn.close()
 
-# Función para generar PDF
+# Funcion para generar PDF
 def generar_pdf(consulta_usuario, sql_query, df):
     buffer = BytesIO()
     doc = SimpleDocTemplate(buffer, pagesize=A4)
     elementos = []
 
-    # Estilos
     styles = getSampleStyleSheet()
     titulo_style = ParagraphStyle(
         'CustomTitle',
         parent=styles['Heading1'],
         fontSize=24,
-        textColor=colors.HexColor('#1f77b4'),
+        textColor=colors.HexColor('#1a1a2e'),
         spaceAfter=30,
-        alignment=1  # Centrado
+        alignment=1
     )
 
     subtitulo_style = ParagraphStyle(
@@ -135,65 +324,54 @@ def generar_pdf(consulta_usuario, sql_query, df):
         spaceAfter=12
     )
 
-    # Título del reporte
     titulo = Paragraph("Reporte de Consulta SQL", titulo_style)
     elementos.append(titulo)
     elementos.append(Spacer(1, 0.3*inch))
 
-    # Información de la consulta
     fecha_actual = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    info = Paragraph(f"<b>Fecha de generación:</b> {fecha_actual}", styles['Normal'])
+    info = Paragraph(f"<b>Fecha de generacion:</b> {fecha_actual}", styles['Normal'])
     elementos.append(info)
     elementos.append(Spacer(1, 0.2*inch))
 
-    # Consulta del usuario
     subtitulo1 = Paragraph("Consulta del Usuario", subtitulo_style)
     elementos.append(subtitulo1)
     consulta_texto = Paragraph(f"<i>{consulta_usuario}</i>", styles['Normal'])
     elementos.append(consulta_texto)
     elementos.append(Spacer(1, 0.2*inch))
 
-    # Consulta SQL generada
     subtitulo2 = Paragraph("Consulta SQL Generada", subtitulo_style)
     elementos.append(subtitulo2)
     sql_texto = Paragraph(f"<font name='Courier'>{sql_query}</font>", styles['Code'])
     elementos.append(sql_texto)
     elementos.append(Spacer(1, 0.3*inch))
 
-    # Resultados
     subtitulo3 = Paragraph("Resultados", subtitulo_style)
     elementos.append(subtitulo3)
 
     if len(df) == 0:
         elementos.append(Paragraph("No se encontraron resultados", styles['Normal']))
     else:
-        # Preparar datos para la tabla
         datos = [df.columns.tolist()] + df.values.tolist()
 
-        # Limitar a primeras 50 filas para PDFs grandes
-        if len(datos) > 51:  # 1 header + 50 filas
+        if len(datos) > 51:
             datos = datos[:51]
             elementos.append(Paragraph(f"<i>Mostrando las primeras 50 filas de {len(df)} totales</i>", styles['Normal']))
             elementos.append(Spacer(1, 0.1*inch))
 
-        # Convertir valores a strings y limitar longitud
         datos_procesados = []
         for fila in datos:
             fila_procesada = []
             for valor in fila:
                 valor_str = str(valor)
-                # Limitar longitud de cada celda
                 if len(valor_str) > 50:
                     valor_str = valor_str[:47] + "..."
                 fila_procesada.append(valor_str)
             datos_procesados.append(fila_procesada)
 
-        # Crear tabla
         tabla = Table(datos_procesados)
 
-        # Estilo de la tabla
         tabla.setStyle(TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1f77b4')),
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#1a1a2e')),
             ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
             ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
             ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
@@ -210,109 +388,128 @@ def generar_pdf(consulta_usuario, sql_query, df):
         elementos.append(Spacer(1, 0.2*inch))
         elementos.append(Paragraph(f"<b>Total de filas:</b> {len(df)}", styles['Normal']))
 
-    # Construir PDF
     doc.build(elementos)
     buffer.seek(0)
     return buffer
 
-# Interfaz principal
-st.title("🎤 Voice to SQL")
-st.markdown("Consulta tu base de datos usando voz o texto")
 
-# Crear dos columnas
-col1, col2 = st.columns([1, 3])
+# =====================
+# INTERFAZ PRINCIPAL
+# =====================
 
-with col1:
-    st.subheader("Opciones de entrada")
+# Header
+st.markdown("""
+<div class="app-header">
+    <h1>Voice to SQL</h1>
+    <p>Consulta tu base de datos usando lenguaje natural, por voz o texto.</p>
+</div>
+""", unsafe_allow_html=True)
 
-    # Botón para grabar voz
-    if st.button("🎤 Grabar Voz", use_container_width=True, type="primary"):
-        texto = grabar_voz()
-        if texto:
-            st.session_state.query_text = texto
+# --- Zona de entrada ---
+st.markdown('<p class="section-label">Entrada de consulta</p>', unsafe_allow_html=True)
 
-with col2:
-    st.subheader("Consulta")
+input_col, btn_col = st.columns([5, 1])
 
-    # Caja de texto
+with input_col:
     query_text = st.text_area(
-        "O escribe tu consulta aquí:",
+        "Consulta en lenguaje natural",
         value=st.session_state.get('query_text', ''),
         height=100,
-        placeholder="Ejemplo: Muéstrame todos los usuarios registrados el último mes"
+        placeholder="Ej: Muestra los 10 clientes con mayor facturacion del ultimo trimestre",
+        label_visibility="collapsed"
     )
-
     if query_text:
         st.session_state.query_text = query_text
 
-# Botón para ejecutar consulta
-if st.button("▶️ Ejecutar Consulta", use_container_width=True):
+with btn_col:
+    if st.button("Grabar Voz", use_container_width=True, type="secondary"):
+        texto = grabar_voz()
+        if texto:
+            st.session_state.query_text = texto
+            st.rerun()
+
+# Boton principal de ejecucion
+if st.button("Ejecutar Consulta", use_container_width=True, type="primary"):
     if 'query_text' in st.session_state and st.session_state.query_text:
         with st.spinner('Generando consulta SQL...'):
             sql_query = generar_sql(st.session_state.query_text)
             st.session_state.sql_query = sql_query
 
-        st.success("✅ Consulta SQL generada")
-        st.code(sql_query, language="sql")
+        # Mostrar SQL generado en contenedor destacado
+        st.markdown('<p class="section-label">Consulta SQL generada</p>', unsafe_allow_html=True)
+        st.markdown(f'<div class="sql-display">{sql_query}</div>', unsafe_allow_html=True)
 
         with st.spinner('Ejecutando consulta...'):
             df, error = ejecutar_sql(sql_query)
 
         if error:
-            st.error(f"❌ Error al ejecutar la consulta: {error}")
+            st.error(f"Error al ejecutar la consulta: {error}")
             st.session_state.df_resultados = None
         else:
-            # Guardar resultados en session_state para el PDF
             st.session_state.df_resultados = df
 
-            st.subheader("📊 Resultados")
+            # Contenedor de resultados
+            st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
+            st.markdown('<p class="section-label">Resultados</p>', unsafe_allow_html=True)
+            st.markdown('<div class="results-container">', unsafe_allow_html=True)
+
             if len(df) == 0:
-                st.info("No se encontraron resultados")
+                st.info("No se encontraron resultados para esta consulta.")
             else:
+                st.markdown(f'<span class="status-badge badge-success">{len(df)} filas encontradas</span>', unsafe_allow_html=True)
                 st.dataframe(df, use_container_width=True)
-                st.caption(f"Total de filas: {len(df)}")
+
+            st.markdown('</div>', unsafe_allow_html=True)
     else:
-        st.warning("⚠️ Por favor, ingresa una consulta usando voz o texto")
+        st.warning("Por favor, ingresa una consulta usando voz o texto antes de ejecutar.")
 
-# Botón para descargar PDF (solo se muestra si hay resultados)
+# Boton de PDF integrado en la seccion de resultados
 if 'df_resultados' in st.session_state and st.session_state.df_resultados is not None:
-    st.markdown("---")
-    col_pdf1, col_pdf2, col_pdf3 = st.columns([1, 2, 1])
-    with col_pdf2:
-        if st.button("📄 Descargar Reporte en PDF", use_container_width=True, type="secondary"):
-            with st.spinner('Generando PDF...'):
-                pdf_buffer = generar_pdf(
-                    st.session_state.query_text,
-                    st.session_state.sql_query,
-                    st.session_state.df_resultados
-                )
+    st.markdown('<hr class="section-divider">', unsafe_allow_html=True)
 
-                # Nombre del archivo con timestamp
-                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-                nombre_archivo = f"reporte_sql_{timestamp}.pdf"
+    with st.spinner('Generando PDF...'):
+        pdf_buffer = generar_pdf(
+            st.session_state.query_text,
+            st.session_state.sql_query,
+            st.session_state.df_resultados
+        )
 
-                st.download_button(
-                    label="⬇️ Descargar PDF",
-                    data=pdf_buffer,
-                    file_name=nombre_archivo,
-                    mime="application/pdf",
-                    use_container_width=True
-                )
-                st.success("✅ PDF generado correctamente")
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    nombre_archivo = f"reporte_sql_{timestamp}.pdf"
 
-# Sidebar con información
+    dl_col1, dl_col2, dl_col3 = st.columns([2, 1, 2])
+    with dl_col2:
+        st.download_button(
+            label="Descargar PDF",
+            data=pdf_buffer,
+            file_name=nombre_archivo,
+            mime="application/pdf",
+            use_container_width=True
+        )
+
+# --- Sidebar ---
 with st.sidebar:
-    st.header("ℹ️ Información")
+    st.markdown("## Informacion")
     st.markdown("""
-    ### Cómo usar:
-    1. **Opción 1:** Presiona el botón "Grabar Voz" y habla tu consulta
-    2. **Opción 2:** Escribe tu consulta en la caja de texto
-    3. Presiona "Ejecutar Consulta" para ver los resultados
+<div style="margin-top: 0.5rem;">
+    <div class="sidebar-step">
+        <div class="step-number">1</div>
+        <div class="step-text">Escribe tu consulta en lenguaje natural o presiona <b>Grabar Voz</b>.</div>
+    </div>
+    <div class="sidebar-step">
+        <div class="step-number">2</div>
+        <div class="step-text">Presiona <b>Ejecutar Consulta</b> para generar el SQL automaticamente.</div>
+    </div>
+    <div class="sidebar-step">
+        <div class="step-number">3</div>
+        <div class="step-text">Revisa los resultados y descarga el reporte en PDF si lo necesitas.</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-    ### Esquema de la BD:
-    """)
-    try:
-        schema = get_db_schema(db_path)
-        st.text(schema)
-    except:
-        st.warning("No se pudo cargar el esquema de la base de datos")
+    with st.expander("Esquema de la base de datos"):
+        try:
+            schema = get_db_schema(db_path)
+            st.code(schema, language=None)
+        except Exception:
+            st.warning("No se pudo cargar el esquema de la base de datos.")
